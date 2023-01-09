@@ -6,27 +6,11 @@ import Education from './education/education'
 import GitintoCard from '../Components/GitintoCard'
 import TecHStacks from '../Components/TecHStacks'
 import Projects from '../Components/Projects'
-import { useState , useEffect } from 'react';
 
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home({data}) {
-const [ myProject,setMyprojectData] = useState([]);
-
-useEffect(()=>{
-getdata()
-},[])
-
-
-const getdata = async()=>{
-  let res = await fetch(`https://api.github.com/search/repositories?q=user:Rishav048+fork:true&sort=updated&per_page=10&type=Repositories`);
-  let data = await res.json();
-  setMyprojectData(data.items)
-  
-}
-
-
+export default function Home({data , data2}) {
 
 
   console.log("My Personal Details", data);
@@ -76,7 +60,7 @@ const getdata = async()=>{
          </div>
 
       <div style={{flex:"65%"}}>
-        <Projects data={myProject}  />
+        <Projects data={data2}  />
       </div>
     </div>
       
@@ -87,11 +71,16 @@ const getdata = async()=>{
 
 
 export const getStaticProps = async()=>{
-  let res1 = await fetch(`https://api.github.com/users/Rishav048`);
+  let res = await fetch(`https://api.github.com/users/Rishav048`);
+  let res1 = await fetch(`https://api.github.com/search/repositories?q=user:Rishav048+fork:true&sort=updated&per_page=10&type=Repositories`)
  
   let data = await res.json();
+  let data2 = await res1.json();
   return {
-    props : {data}
+    props : {
+      data:data,
+      data2:data2.items
+    }
   }
 }
 
